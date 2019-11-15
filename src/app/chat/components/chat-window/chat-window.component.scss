@@ -1,0 +1,17 @@
+.content {
+  position: relative;
+  padding-bottom: 55px;
+  margin-bottom: -50px;
+}
+
+.input {
+  flex: 1 1 90%;       // deixa o input com 90% do tamanho disponivel
+  height: 21px;       // altura
+  border: none;      // removendo bordas
+  padding: 3px 10px;    // configurando patch
+  font-size: 18px;    // tamanho da fonte
+  color: #555;    // cor do background
+  background-color: #efefef;
+  outline: none;
+  resize: none;   // não pode ser re-dimencionado
+}

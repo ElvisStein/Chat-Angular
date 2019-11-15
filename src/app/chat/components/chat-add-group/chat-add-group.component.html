@@ -1,0 +1,64 @@
+<h2 mat-dialog-title>New Group</h2>
+
+<input type="file" accept="image/*" [hidden]="true" #inputFile (change)="onSelectImage($event)">
+
+<div class="group-cover">
+  <app-avatar
+    [src]="(selectedImage | readFile | async) || 'assets/images/group-no-photo.png'"
+    title="Group cover">
+      <button mat-icon-button color="primary" class="btn-choose-photo" (click)="inputFile.click()">
+        <mat-icon>camera_alt</mat-icon>
+      </button>
+  </app-avatar>
+</div>
+
+<form [formGroup]="newGroupForm" (submit)="onSubmit()">
+
+  <mat-dialog-content>
+
+    <mat-form-field>
+      <input matInput type="text" placeholder="Título do grupo" formControlName="title" />
+      <mat-error *ngIf="title.touched && title.hasError('required')">
+        Este campo é obrigatório
+      </mat-error>
+      <mat-error *ngIf="title.touched && title.hasError('minlength')">
+        Entre com pelo menos 3 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Lista de usuários adicionados ao grupo -->
+    <mat-nav-list formArrayName="members"*ngIf="members.controls.length > 0">
+        <h3 matSubheader>Usuários selecionados:</h3>
+        <mat-list-item *ngFor="let member of members.controls; let i=index" [formGroupName]="i">
+          <h3 matLine>{{ member.value.name }}</h3>
+          <button type="button" mat-icon-button (click)= "removeMember(i)">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+    </mat-nav-list>
+
+    <!-- Metodo para mostrar na tela a lista de usuarios para um grupo -->
+    <mat-nav-list *ngIf="users$ | async as users"> <!-- So aparece na tela se tiver algum valor atribuido ao users$ -->
+      <ng-container *ngIf="users.length > 0; else noUsersTemplate">
+        <h3 matSubheader>Adicionar usuários:</h3>
+        <mat-list-item *ngFor="let user of users">
+          <h3 matLine>{{ user.name }}</h3>
+          <button type="button" mat-icon-button (click)="addMember(user)">
+            <mat-icon>add</mat-icon>
+          </button>
+        </mat-list-item>
+      </ng-container>
+      <ng-template #noUsersTemplate>
+        <p>Nenhum usuário cadastrado.</p>
+      </ng-template>
+    </mat-nav-list>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button mat-button type="submit" [disabled]="newGroupForm.invalid">Criar</button>
+  </mat-dialog-actions>
+
+</form>

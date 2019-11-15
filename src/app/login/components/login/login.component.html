@@ -1,0 +1,63 @@
+<div class="login-container">
+
+  <mat-card>
+
+    <mat-card-title>
+      <mat-toolbar color="primary">
+        <span>{{ configs.actionText }}</span>
+        <span class="spacer"></span>
+        <mat-spinner
+          diameter="25"
+          strokeWidth="2"
+          *ngIf="configs.isLoading">
+        </mat-spinner>
+      </mat-toolbar>
+    </mat-card-title>
+
+    <mat-card-content>
+
+      <form (submit)="onSubmit()" [formGroup]="loginForm">
+
+        <mat-form-field *ngIf="!configs.isLogin">
+          <input matInput type="text" placeholder="Nome" formControlName="name">
+          <mat-error *ngIf="name.hasError('required')">
+            Este campo é obrigatório
+          </mat-error>
+          <mat-error *ngIf="name.hasError('minlength')">
+            Digite pelo menos 5 caracteres
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput type="email" placeholder="Email" formControlName="email">
+          <mat-error *ngIf="email.hasError('required')">
+            Este campo é obrigatório
+          </mat-error>
+          <mat-error *ngIf="email.hasError('email')">
+            Por favor insira um endereço de e-mail válido
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput type="password" placeholder="Senha" formControlName="password">
+          <mat-error *ngIf="password.hasError('required')">
+            Este campo é obrigatório
+          </mat-error>
+          <mat-error *ngIf="password.hasError('minlength')">
+            Digite pelo menos 5 caracteres
+          </mat-error>
+        </mat-form-field>
+
+        <mat-slide-toggle [checked]="authService.keepSigned" (change)="onKeepSigned()">Mantenha-me conectado</mat-slide-toggle>
+        <mat-slide-toggle [checked]="authService.rememberMe" (change)="onRememberMe()">Lembre-me</mat-slide-toggle>
+
+        <button type="submit" mat-button color="primary" [disabled]="loginForm.invalid">{{ configs.actionText }}</button>
+        <button type="button" mat-button color="primary" (click)="changeAction()">{{ configs.buttonActionText }}</button>
+
+      </form>
+
+    </mat-card-content>
+
+  </mat-card>
+
+</div>

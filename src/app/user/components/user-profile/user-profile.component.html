@@ -1,0 +1,97 @@
+<mat-card class="user-profile mat-typography">
+
+  <mat-card-header>
+    <div class="photo">
+      <app-avatar
+        mat-card-avatar
+        [title]="user.name"
+        [src]="user.getPhotoURL()">
+      </app-avatar>
+      <button mat-icon-button color="primary" class="btn-edit-user" (click)="isEditing = !isEditing" [disabled]="isLoading">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <input type="file" accept="image/*" [hidden]="true" #inputFile (change)="onSelectImage($event)">
+      <button mat-icon-button color="primary" class="btn-choose-photo" (click)="triggerInputFile(inputFile)">
+        <mat-icon>camera_alt</mat-icon>
+      </button>
+    </div>
+  </mat-card-header>
+
+  <mat-card-content>
+
+    <ng-container *ngIf="!isEditing; else editTemplate">
+      <h2>{{ user.name }}</h2>
+      <p>{{ user.email }}</p>
+    </ng-container>
+
+    <form #userForm="ngForm">
+      <ng-template #editTemplate>
+
+        <div>
+          <mat-form-field>    <!-- Na aula ele centralizou o nome e email no campo, eu mantive a esquerda -->
+
+            <input
+              matInput
+              required
+              minlength="5"
+              type="text"
+              name="name"
+              class="text-left"
+              placeholder="Nome"
+              [(ngModel)]="user.name"
+              #name="ngModel">
+
+            <mat-error *ngIf="name.touched && name.hasError('required')">
+              Este campo é obrigatorio
+            </mat-error>
+            <mat-error *ngIf="name.touched && name.hasError('minlength')">
+              Este campo deve conter 5 caracteres
+            </mat-error>
+
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field>
+
+            <input
+              matInput
+              required
+              email
+              type="email"
+              name="email"
+              class="text-left"
+              placeholder="Email"
+              [(ngModel)]="user.email"
+              #email="ngModel">
+
+            <mat-error *ngIf="email.touched && email.hasError('required')">
+              Este campo é obrigatorio
+            </mat-error>
+            <mat-error *ngIf="email.touched && email.hasError('email')">
+              Este campo deve ser um Email válido
+            </mat-error>
+
+          </mat-form-field>
+        </div>
+
+      </ng-template>
+    </form>
+
+  </mat-card-content>
+
+</mat-card>
+
+<mat-toolbar color="primary" class="fixed-bottom">
+  <h1>Ações</h1>
+  <span class="spacer"></span>
+  <mat-spinner
+    diameter="25"
+    strokeWidth="3"
+    *ngIf="isLoading">
+  </mat-spinner>
+  <button mat-icon-button title="Salvar" (click)="onSave()" [disabled]="userForm.invalid || !isEditing">
+    <mat-icon>checked</mat-icon>
+  </button>
+
+</mat-toolbar>

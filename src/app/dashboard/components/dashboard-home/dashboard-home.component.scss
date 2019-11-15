@@ -1,0 +1,11 @@
+/* estabelece a dimenção do sombriamento que é dado na
+pagina enquanto o menu estiver aberto */
+.sidenav-container {
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Dimenciona o tamanho do menu, no caso a baixo apenas a largura dele */
+.sidenav {
+  width: 320px;
+}

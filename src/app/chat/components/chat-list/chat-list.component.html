@@ -1,0 +1,51 @@
+<mat-nav-list>
+
+    <!-- Referencio uma variavel de template para enquanto o meu chats não ouver um resultado exibir esta variavel -->
+    <ng-container *ngIf="chats$ | async as chats; else loadingChats">
+        <ng-container *ngIf="chats.length > 0; else noChats">
+          <a mat-list-item [routerLink]="[chat.id]" *ngFor="let chat of chats; trackBy: trackByFn">
+            <app-avatar
+              matListAvatar
+              [src]= "chat.getPhotoURL()"
+              [title]="getChatTitle(chat)"
+              [containerStyles]="{width: '50px', height: '50px', margin: 0}">
+            </app-avatar>
+            <!-- Estes dados são acessados do chat$ que esta no ("chat/component/chat-list/chat.graphql.ts" e "core/models/chat.model.ts") -->
+            <h3 matLine>{{ getChatTitle(chat) }}</h3>
+            <p matLine>{{ getLastMessage(chat) }}</p>
+          </a>
+      </ng-container>
+    </ng-container>
+
+  </mat-nav-list>
+
+  <!-- Criar uma variavel de template com exatamente o mesmo nome da variavel que esta no else e loading -->
+    <!-- class="spinner" foi criado no styles.css -->
+  <ng-template #loadingChats>
+    <mat-spinner
+      class="spinner"
+      diameter= "50"
+      strokeWidth="5">
+    </mat-spinner>
+  </ng-template>
+
+  <!-- Mostra na tela caso não haja algum usuário. criado em shared/component/no-record-->
+  <ng-template #noChats>
+      <app-no-record
+      icon="chat_bubble"
+      title="Nenhuma conversa.">
+    </app-no-record>
+  </ng-template>
+
+  <!-- Exibe na tela um botão para chamar o menu de criação de grupo -->
+  <button mat-fab class="fab-bottom-right" [matMenuTriggerFor]="chatListOptions">
+    <mat-icon>add</mat-icon>
+  </button>
+
+  <!-- Cria o menu para criação de grupo -->
+  <mat-menu #chatListOptions="matMenu" [overlapTrigger]="false">
+    <button mat-menu-item (click)="onAddGroup()">
+      <mat-icon>group_add</mat-icon>
+      <span>Novo grupo</span>
+    </button>
+  </mat-menu>

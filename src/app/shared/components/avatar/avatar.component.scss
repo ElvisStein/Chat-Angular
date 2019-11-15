@@ -1,0 +1,13 @@
+.avatar-container {
+  position: relative;
+  width: 180px;   // container quadrado de 180px
+  height: 180px;
+  margin: 0 auto;
+  border-radius: 100%;  // Configura as bordas para o quadrado se tornar um circulo
+  img {
+    border-radius: 100%;  // Aredonda as bordas da image
+    max-height: 100%;
+    margin: auto;   // estas duas linhas centralizão a imagem no container
+    display: block;
+  }
+}

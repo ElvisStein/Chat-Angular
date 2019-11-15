@@ -1,0 +1,37 @@
+<mat-sidenav-container class="sidenav-container">
+
+  <!-- conteiner do menu; com o "#sidenav" crio uma variavel de template e fica disponivel por todo o template -->
+  <mat-sidenav #sidenav class="sidenav">
+
+    <!-- criando a barra Azul(cor do projeto) com o nome de Menu
+      e uma sombra feita com o [class="mat-elevator-z8"] lembrando que o "z8" é o tamanho da sombra -->
+    <mat-toolbar color="primary" class="mat-elevator-z8">
+      Menu
+    </mat-toolbar>
+
+    <!-- esta criando o primeiro icone e campo do nosso menu.
+      Baseado nas informações que estão la no "app-dashboard-resources" -->
+    <app-dashboard-resources
+      [isMenu]="true"
+      (close)="sidenav.close()">
+
+      <!-- Cria um novo campo de lista no menu -->
+      <mat-divider></mat-divider>
+
+      <!-- Onde é criado um botão para sair da Conta (Logout) -->
+      <mat-list-item (click)="onLogout(sidenav)">
+        <mat-icon matListIcon>arrow_forward</mat-icon>
+        <h3 matLine>Sair</h3>
+      </mat-list-item>
+
+    </app-dashboard-resources>
+
+  </mat-sidenav>
+
+  <!-- conteudo do menu -->
+  <mat-sidenav-content><!-- este "sidenav" a baixo é o que criei no dashboard-header.component.ts -->
+    <app-dashboard-header [sidenav]="sidenav"></app-dashboard-header>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
